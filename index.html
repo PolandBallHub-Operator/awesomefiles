@@ -1,0 +1,1298 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Files Help - Android™ System File Manager</title>
+  
+  <style>
+    :root {
+      /* Dynamic Color Defaults (M3 Tonal Palette generated) */
+      --myoui-sys-color-background: #f3f6f0;
+      --myoui-sys-color-on-background: #181d18;
+      --myoui-sys-color-surface-card: #e8efe3;
+      --myoui-sys-color-surface-variant: #dde5d7;
+      --myoui-sys-color-on-surface: #181d18;
+      --myoui-sys-color-on-surface-variant: #424940;
+      --myoui-sys-color-primary: #1f6c30;
+      --myoui-sys-color-on-primary: #ffffff;
+      --myoui-sys-color-primary-container: #a6f5aa;
+      --myoui-sys-color-on-primary-container: #002107;
+      --myoui-sys-color-outline: #72796f;
+      --myoui-sys-color-outline-focused: #1f6c30;
+
+      /* MyouI Radius Specifications */
+      --myoui-radius-card: 20px;
+      --myoui-radius-dialog: 28px;
+      --myoui-radius-pill: 50px;
+      --myoui-radius-input: 12px;
+      --myoui-radius-btn: 20px;
+
+      --myoui-font: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: var(--myoui-font);
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--myoui-sys-color-background);
+      color: var(--myoui-sys-color-on-background);
+      transition: background-color 0.3s ease, color 0.3s ease;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      padding-bottom: 40px;
+      overflow-x: hidden;
+    }
+
+    /* Outer Wrapper */
+    .app-viewport {
+      width: 100%;
+      max-width: 640px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      position: relative;
+    }
+
+    .app-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 8px 4px;
+    }
+
+    .brand-title-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-logo {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+
+    .brand-name {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--myoui-sys-color-on-background);
+      letter-spacing: -0.3px;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* MyouI Buttons */
+    .myoui-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 18px;
+      border-radius: var(--myoui-radius-btn);
+      font-size: 14px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+
+    .btn-filled {
+      background-color: var(--myoui-sys-color-primary);
+      color: var(--myoui-sys-color-on-primary);
+    }
+
+    .btn-container {
+      background-color: var(--myoui-sys-color-primary-container);
+      color: var(--myoui-sys-color-on-primary-container);
+    }
+
+    .btn-outlined {
+      background-color: transparent;
+      border: 1.5px solid var(--myoui-sys-color-outline);
+      color: var(--myoui-sys-color-primary);
+    }
+
+    .btn-icon-only {
+      width: 40px;
+      height: 40px;
+      padding: 0;
+      border-radius: var(--myoui-radius-pill);
+      background-color: var(--myoui-sys-color-surface-card);
+      color: var(--myoui-sys-color-on-surface);
+      border: none;
+    }
+
+    .myoui-btn:active {
+      transform: scale(0.96);
+      opacity: 0.85;
+    }
+
+    .hero-card {
+      background-color: var(--myoui-sys-color-surface-card);
+      border-radius: var(--myoui-radius-card);
+      padding: 24px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      position: relative;
+      overflow: hidden;
+      transition: background-color 0.3s;
+    }
+
+    .hero-top {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+    }
+
+    .hero-icon-large {
+      width: 72px;
+      height: 72px;
+      border-radius: 18px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      flex-shrink: 0;
+    }
+
+    .hero-text {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .hero-tag {
+      display: inline-block;
+      align-self: flex-start;
+      padding: 4px 10px;
+      background-color: var(--myoui-sys-color-primary-container);
+      color: var(--myoui-sys-color-on-primary-container);
+      font-size: 11px;
+      font-weight: 700;
+      border-radius: var(--myoui-radius-pill);
+    }
+
+    .hero-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--myoui-sys-color-on-surface);
+      line-height: 1.25;
+    }
+
+    .hero-desc {
+      font-size: 14px;
+      color: var(--myoui-sys-color-on-surface-variant);
+      line-height: 1.5;
+    }
+
+    .hero-img-container {
+      width: 100%;
+      border-radius: 16px;
+      overflow: hidden;
+      background-color: var(--myoui-sys-color-surface-variant);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .hero-img {
+      width: 100%;
+      height: auto;
+      display: block;
+      object-fit: cover;
+    }
+
+    .search-box-container {
+      position: relative;
+      width: 100%;
+    }
+
+    .myoui-textfield {
+      position: relative;
+      width: 100%;
+    }
+
+    .myoui-textfield input {
+      width: 100%;
+      height: 54px;
+      padding: 0 18px 0 48px;
+      background: var(--myoui-sys-color-surface-card);
+      border: 1.5px solid var(--myoui-sys-color-outline);
+      border-radius: var(--myoui-radius-input);
+      font-size: 15px;
+      color: var(--myoui-sys-color-on-surface);
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    .myoui-textfield label {
+      position: absolute;
+      left: 14px;
+      top: -9px;
+      background-color: var(--myoui-sys-color-background);
+      padding: 0 6px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--myoui-sys-color-outline);
+      transition: color 0.2s;
+      border-radius: 4px;
+    }
+
+    .search-icon-inside {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--myoui-sys-color-on-surface-variant);
+      pointer-events: none;
+    }
+
+    .myoui-textfield input:focus {
+      border-color: var(--myoui-sys-color-outline-focused);
+      border-width: 2px;
+      background: var(--myoui-sys-color-background);
+    }
+
+    .myoui-textfield input:focus + label {
+      color: var(--myoui-sys-color-outline-focused);
+    }
+
+    .section-label {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--myoui-sys-color-on-surface-variant);
+      margin-top: 6px;
+      margin-bottom: -10px;
+      padding-left: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .card-group {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      border-radius: var(--myoui-radius-card);
+      overflow: hidden;
+    }
+
+    .myoui-card {
+      background-color: var(--myoui-sys-color-surface-card);
+      border: none;
+      padding: 16px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: background-color 0.2s ease;
+    }
+
+    .card-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .card-title-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .card-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      background-color: var(--myoui-sys-color-surface-variant);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--myoui-sys-color-primary);
+      flex-shrink: 0;
+    }
+
+    .card-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--myoui-sys-color-on-surface);
+    }
+
+    .card-desc {
+      font-size: 13px;
+      color: var(--myoui-sys-color-on-surface-variant);
+      line-height: 1.45;
+    }
+
+    .card-media {
+      width: 100%;
+      border-radius: 12px;
+      overflow: hidden;
+      background-color: var(--myoui-sys-color-surface-variant);
+      margin-top: 4px;
+    }
+
+    .card-media img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .accordion-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .accordion-item {
+      background-color: var(--myoui-sys-color-surface-card);
+      border-radius: var(--myoui-radius-card);
+      overflow: hidden;
+      transition: background-color 0.2s;
+    }
+
+    .accordion-header {
+      padding: 16px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .accordion-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--myoui-sys-color-on-surface);
+    }
+
+    .accordion-chevron {
+      color: var(--myoui-sys-color-on-surface-variant);
+      transition: transform 0.25s ease;
+    }
+
+    .accordion-item.active .accordion-chevron {
+      transform: rotate(180deg);
+    }
+
+    .accordion-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s cubic-bezier(0, 1, 0, 1), padding 0.3s;
+      padding: 0 18px;
+      font-size: 13.5px;
+      color: var(--myoui-sys-color-on-surface-variant);
+      line-height: 1.6;
+      background-color: rgba(0,0,0,0.01);
+    }
+
+    .accordion-item.active .accordion-body {
+      max-height: 1000px;
+      padding: 0 18px 16px 18px;
+      transition: max-height 0.3s ease-in-out, padding 0.3s;
+    }
+
+    /* Right Side Drawer */
+    .drawer-backdrop {
+      position: fixed;
+      inset: 0;
+      background-color: rgba(0, 0, 0, 0.4);
+      z-index: 1000;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.25s ease, visibility 0.25s ease;
+    }
+
+    .drawer-backdrop.is-open {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .myoui-drawer-right {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 300px;
+      background-color: var(--myoui-sys-color-surface-card);
+      z-index: 1010;
+      padding: 24px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      border-top-left-radius: 28px;
+      border-bottom-left-radius: 28px;
+      transform: translateX(100%);
+      transition: transform 0.25s cubic-bezier(0.1, 0.9, 0.2, 1);
+      box-shadow: -4px 0 20px rgba(0,0,0,0.1);
+      overflow-y: auto;
+    }
+
+    .drawer-backdrop.is-open .myoui-drawer-right {
+      transform: translateX(0);
+    }
+
+    .drawer-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--myoui-sys-color-on-surface);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .drawer-nav-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 16px;
+      border-radius: var(--myoui-radius-pill);
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--myoui-sys-color-on-surface-variant);
+      cursor: pointer;
+      text-decoration: none;
+      transition: background-color 0.2s;
+    }
+
+    .drawer-nav-item:active, .drawer-nav-item.active {
+      background-color: var(--myoui-sys-color-primary-container);
+      color: var(--myoui-sys-color-on-primary-container);
+    }
+
+    /* Dynamic Theme & Settings Dialog */
+    .dialog-backdrop {
+      position: fixed;
+      inset: 0;
+      background-color: rgba(0, 0, 0, 0.4);
+      backdrop-filter: blur(4px);
+      z-index: 1200;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.25s ease, visibility 0.25s ease;
+    }
+
+    .dialog-backdrop.is-open {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .myoui-dialog {
+      background-color: var(--myoui-sys-color-surface-card);
+      border-radius: var(--myoui-radius-dialog);
+      padding: 24px;
+      width: 100%;
+      max-width: 380px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      transform: scale(0.92);
+      transition: transform 0.25s ease;
+    }
+
+    .dialog-backdrop.is-open .myoui-dialog {
+      transform: scale(1);
+    }
+
+    .dialog-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--myoui-sys-color-on-surface);
+    }
+
+    .setting-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 8px 0;
+    }
+
+    .setting-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--myoui-sys-color-on-surface);
+    }
+
+    /* M3 Switch Component */
+    .myoui-switch {
+      position: relative;
+      width: 52px;
+      height: 32px;
+      display: inline-block;
+    }
+
+    .myoui-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .switch-track {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: var(--myoui-sys-color-surface-variant);
+      border-radius: var(--myoui-radius-pill);
+      transition: background-color 0.25s ease;
+      display: flex;
+      align-items: center;
+      border: 1px solid var(--myoui-sys-color-outline);
+    }
+
+    .switch-thumb {
+      position: absolute;
+      height: 24px;
+      width: 24px;
+      left: 3px;
+      background-color: var(--myoui-sys-color-outline);
+      border-radius: 50%;
+      transition: transform 0.25s ease, background-color 0.25s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .switch-thumb svg {
+      width: 14px;
+      height: 14px;
+      stroke: var(--myoui-sys-color-primary);
+      stroke-width: 3;
+      fill: none;
+      opacity: 0;
+      transform: scale(0.5);
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+
+    input:checked + .switch-track {
+      background-color: var(--myoui-sys-color-primary);
+      border-color: var(--myoui-sys-color-primary);
+    }
+
+    input:checked + .switch-track .switch-thumb {
+      transform: translateX(20px);
+      background-color: var(--myoui-sys-color-on-primary);
+    }
+
+    input:checked + .switch-track .switch-thumb svg {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    /* Color Seed Input */
+    .color-picker-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .color-picker-input {
+      -webkit-appearance: none;
+      border: none;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      cursor: pointer;
+      background: none;
+    }
+
+    .color-picker-input::-webkit-color-swatch-wrapper {
+      padding: 0;
+    }
+
+    .color-picker-input::-webkit-color-swatch {
+      border: 2px solid var(--myoui-sys-color-outline);
+      border-radius: 50%;
+    }
+
+    /* Toast Notification */
+    .myoui-toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background-color: var(--myoui-sys-color-on-surface);
+      color: var(--myoui-sys-color-background);
+      padding: 12px 20px;
+      border-radius: var(--myoui-radius-pill);
+      font-size: 13px;
+      font-weight: 600;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+      z-index: 2000;
+      opacity: 0;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      pointer-events: none;
+    }
+
+    .myoui-toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+  </style>
+
+  <!-- Material Color Utilities ES Module -->
+  <script type="module">
+    import {
+      argbFromHex,
+      hexFromArgb,
+      Hct,
+      SchemeTonalSpot
+    } from 'https://esm.run/@material/material-color-utilities';
+
+    window.M3Theme = {
+      applyTheme: function(seedHex, isDark = false) {
+        try {
+          const seedArgb = argbFromHex(seedHex);
+          const hct = Hct.fromInt(seedArgb);
+          const scheme = new SchemeTonalSpot(hct, isDark, 0.0);
+
+          const myouiColors = {
+            '--myoui-sys-color-background': hexFromArgb(scheme.background),
+            '--myoui-sys-color-on-background': hexFromArgb(scheme.onBackground),
+            '--myoui-sys-color-surface-card': hexFromArgb(scheme.surfaceContainerLow),
+            '--myoui-sys-color-surface-variant': hexFromArgb(scheme.surfaceVariant),
+            '--myoui-sys-color-on-surface': hexFromArgb(scheme.onSurface),
+            '--myoui-sys-color-on-surface-variant': hexFromArgb(scheme.onSurfaceVariant),
+            '--myoui-sys-color-primary': hexFromArgb(scheme.primary),
+            '--myoui-sys-color-on-primary': hexFromArgb(scheme.onPrimary),
+            '--myoui-sys-color-primary-container': hexFromArgb(scheme.primaryContainer),
+            '--myoui-sys-color-on-primary-container': hexFromArgb(scheme.onPrimaryContainer),
+            '--myoui-sys-color-outline': hexFromArgb(scheme.outline),
+            '--myoui-sys-color-outline-focused': hexFromArgb(scheme.primary)
+          };
+
+          const root = document.documentElement;
+          for (const [key, value] of Object.entries(myouiColors)) {
+            root.style.setProperty(key, value);
+          }
+        } catch(e) {
+          console.error("Theme generation error:", e);
+        }
+      }
+    };
+  </script>
+</head>
+<body>
+
+  <div class="app-viewport">
+
+    <!-- Header Navigation -->
+    <header class="app-header">
+      <div class="brand-title-group">
+        <img src="https://raw.githubusercontent.com/PolandBallHub-Operator/awesomefiles/refs/heads/main/icon.png" alt="Files Icon" class="brand-logo" onerror="this.src='https://placehold.co/72x72/1f6c30/ffffff?text=Files'">
+        <span class="brand-name">Files Help</span>
+      </div>
+
+      <div class="header-actions">
+        <!-- Language Switcher Button -->
+        <button class="myoui-btn btn-container" id="langToggleBtn" onclick="toggleLanguage()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          <span id="langBtnText">EN</span>
+        </button>
+
+        <!-- Dynamic Theme Customizer -->
+        <button class="myoui-btn btn-icon-only" onclick="openDialog('themeDialog')" aria-label="Theme Settings">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
+        </button>
+
+        <!-- Right Side Menu Button -->
+        <button class="myoui-btn btn-icon-only" onclick="toggleDrawer(true)" aria-label="Menu">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <section class="hero-card">
+      <div class="hero-top">
+        <img src="https://raw.githubusercontent.com/PolandBallHub-Operator/awesomefiles/refs/heads/main/icon.png" class="hero-icon-large" alt="Files Icon" onerror="this.src='https://placehold.co/72x72/1f6c30/ffffff?text=Files'">
+        <div class="hero-text">
+          <span class="hero-tag" data-i18n="hero_tag">Android™ Pre-installed</span>
+          <h1 class="hero-title" data-i18n="hero_title">DocumentsUI (Files)</h1>
+          <p class="hero-desc" data-i18n="hero_desc">Androidを使っているならコレ！システム機能だから安全で最強。ログイン不要・権限要求無しの真のファイルマネージャー。</p>
+        </div>
+      </div>
+      <div class="hero-img-container">
+        <img src="https://raw.githubusercontent.com/PolandBallHub-Operator/awesomefiles/refs/heads/main/screenshots/topscreen.png" class="hero-img" alt="Top Screen" onerror="this.src='https://placehold.co/600x320/1f6c30/ffffff?text=Top+Screen+Preview'">
+      </div>
+    </section>
+
+    <div class="search-box-container">
+      <div class="myoui-textfield">
+        <svg class="search-icon-inside" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="searchInput" placeholder=" " oninput="filterHelpContent()">
+        <label for="searchInput" data-i18n="search_label">ヘルプや機能を検索 (e.g. Zip, Drive, data)...</label>
+      </div>
+    </div>
+
+    <div class="section-label" data-i18n="sec_key_features">おすすめの最高機能</div>
+
+    <div class="card-group">
+      <!-- Feature 1: Android/data -->
+      <div class="myoui-card">
+        <div class="card-header-row">
+          <div class="card-title-group">
+            <div class="card-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+            </div>
+            <div class="card-title" data-i18n="feat1_title">Android/data ディレクトリに完全アクセス</div>
+          </div>
+        </div>
+        <p class="card-desc" data-i18n="feat1_desc">外部ファイル管理アプリではアクセス規制される「Android/data」や「Android/obb」フォルダのデータも、システム標準アプリのため安全かつ確実に直接閲覧・編集が可能です。</p>
+        <div class="card-media">
+          <img src="https://raw.githubusercontent.com/PolandBallHub-Operator/awesomefiles/refs/heads/main/screenshots/androiddataok.png" alt="Android Data Access" onerror="this.src='https://placehold.co/600x300/e8efe3/181d18?text=Android/data+Access'">
+        </div>
+      </div>
+
+      <!-- Feature 2: Drag & Drop -->
+      <div class="myoui-card">
+        <div class="card-header-row">
+          <div class="card-title-group">
+            <div class="card-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6"/><path d="M10 14L21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
+            </div>
+            <div class="card-title" data-i18n="feat2_title">ドラッグ＆ドロップで超快適書き込み</div>
+          </div>
+        </div>
+        <p class="card-desc" data-i18n="feat2_desc">「ドラッグアンドドロップがいっちゃん使いやすい！」画面分割時やマルチウィンドウ時に、ファイルを長押しして別のフォルダーやウィンドウへドラッグするだけで高速転送。</p>
+        <div class="card-media">
+          <img src="https://raw.githubusercontent.com/PolandBallHub-Operator/awesomefiles/refs/heads/main/screenshots/topscreen.png" alt="Drag and Drop" onerror="this.src='https://placehold.co/600x300/e8efe3/181d18?text=Drag+and+Drop'">
+        </div>
+      </div>
+
+      <!-- Feature 3: Zip Viewer -->
+      <div class="myoui-card">
+        <div class="card-header-row">
+          <div class="card-title-group">
+            <div class="card-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+            </div>
+            <div class="card-title" data-i18n="feat3_title">Zipを解凍せずにプレビュー＆選択展開</div>
+          </div>
+        </div>
+        <p class="card-desc" data-i18n="feat3_desc">圧縮ファイル（Zip）の中身全体を解凍することなく中身を閲覧可能。必要なファイルだけを個別に選んで解凍・抽出できるのでストレージ容量を節約できます。</p>
+        <div class="card-media">
+          <img src="https://raw.githubusercontent.com/PolandBallHub-Operator/awesomefiles/refs/heads/main/screenshots/zipviewer.png" alt="Zip Viewer" onerror="this.src='https://placehold.co/600x300/e8efe3/181d18?text=Zip+Viewer'">
+        </div>
+      </div>
+
+      <!-- Feature 4: Cloud Integration -->
+      <div class="myoui-card">
+        <div class="card-header-row">
+          <div class="card-title-group">
+            <div class="card-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
+            </div>
+            <div class="card-title" data-i18n="feat4_title">クラウドストレージ統合 (Drive & Smart connect)</div>
+          </div>
+        </div>
+        <p class="card-desc" data-i18n="feat4_desc">DriveやSmart connect等の対応ドライブアプリをそのまま単一のファイルマネージャーUI内で統合して切り替え可能。追加のログイン作業なしでシームレスに同期。</p>
+        <div class="card-media">
+          <img src="https://raw.githubusercontent.com/PolandBallHub-Operator/awesomefiles/refs/heads/main/screenshots/gdriveintegration.png" alt="Cloud Integration" onerror="this.src='https://placehold.co/600x300/e8efe3/181d18?text=Drive+Integration'">
+        </div>
+      </div>
+
+      <!-- Feature 5: Security & No Extra Perms -->
+      <div class="myoui-card">
+        <div class="card-header-row">
+          <div class="card-title-group">
+            <div class="card-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <div class="card-title" data-i18n="feat5_title">不要な権限なし・安心のシステム保護</div>
+          </div>
+        </div>
+        <p class="card-desc" data-i18n="feat5_desc">サードパーティ製アプリのような「フルストレージ権限要求」や「トラッキング」はありません。OS標準のシステムUIだからこそ最高のセキュリティを提供。</p>
+        <div class="card-media">
+          <img src="https://raw.githubusercontent.com/PolandBallHub-Operator/awesomefiles/refs/heads/main/screenshots/secureperm.png" alt="Secure Permissions" onerror="this.src='https://placehold.co/600x300/e8efe3/181d18?text=Secure+Permissions'">
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label" data-i18n="sec_help_center">詳しいヘルプ＆使い方ガイド</div>
+
+    <div class="accordion-list" id="helpAccordionList">
+      <!-- Dynamic Help Items render here via JS -->
+    </div>
+
+  </div>
+
+  <!-- Right Drawer Backdrop & Menu -->
+  <div class="drawer-backdrop" id="drawerBackdrop" onclick="toggleDrawer(false)">
+    <div class="myoui-drawer-right" onclick="event.stopPropagation()">
+      <div class="drawer-title">
+        <span data-i18n="drawer_menu_title">Files 機能メニュー</span>
+        <button class="myoui-btn btn-icon-only" onclick="toggleDrawer(false)">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <a class="drawer-nav-item active" onclick="scrollToTop(); toggleDrawer(false);">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+        <span data-i18n="nav_top">トップページ</span>
+      </a>
+
+      <a class="drawer-nav-item" onclick="openHelpCategory('android_data'); toggleDrawer(false);">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+        <span data-i18n="nav_data">Android/dataの表示</span>
+      </a>
+
+      <a class="drawer-nav-item" onclick="openHelpCategory('dnd'); toggleDrawer(false);">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6"/><path d="M10 14L21 3"/></svg>
+        <span data-i18n="nav_dnd">ドラッグ＆ドロップ</span>
+      </a>
+
+      <a class="drawer-nav-item" onclick="openHelpCategory('zip'); toggleDrawer(false);">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+        <span data-i18n="nav_zip">Zip解凍＆閲覧</span>
+      </a>
+
+      <a class="drawer-nav-item" onclick="openHelpCategory('drive'); toggleDrawer(false);">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
+        <span data-i18n="nav_cloud">ドライブ連携</span>
+      </a>
+
+      <a class="drawer-nav-item" onclick="openHelpCategory('view'); toggleDrawer(false);">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        <span data-i18n="nav_view">グリッド/リスト切り替え</span>
+      </a>
+
+      <a class="drawer-nav-item" onclick="openHelpCategory('hidden'); toggleDrawer(false);">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+        <span data-i18n="nav_hidden">隠しファイル表示</span>
+      </a>
+
+      <div style="margin-top:auto; padding-top:20px; border-top:1px solid var(--myoui-sys-color-outline); font-size:12px; color:var(--myoui-sys-color-on-surface-variant); text-align:center;">
+        Android™ System Component Documentation
+      </div>
+    </div>
+  </div>
+
+  <!-- M3 Settings & Theme Customizer Modal -->
+  <div class="dialog-backdrop" id="themeDialog" onclick="closeDialog('themeDialog')">
+    <div class="myoui-dialog" onclick="event.stopPropagation()">
+      <div class="dialog-title" data-i18n="theme_dialog_title">テーマとM3カラー設定</div>
+
+      <div class="setting-row">
+        <span class="setting-label" data-i18n="theme_dark_mode">ダークモード</span>
+        <label class="myoui-switch">
+          <input type="checkbox" id="darkModeToggle" onchange="updateThemeSettings()">
+          <span class="switch-track">
+            <span class="switch-thumb">
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            </span>
+          </span>
+        </label>
+      </div>
+
+      <div class="setting-row">
+        <span class="setting-label" data-i18n="theme_seed_color">キーカラー (Seed Color)</span>
+        <div class="color-picker-wrapper">
+          <input type="color" id="seedColorPicker" class="color-picker-input" value="#1F6C30" onchange="updateThemeSettings()">
+        </div>
+      </div>
+
+      <div style="display:flex; justify-content:flex-end; gap:8px; margin-top:8px;">
+        <button class="myoui-btn btn-container" onclick="closeDialog('themeDialog')" data-i18n="btn_close">閉じる</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="myoui-toast" id="toast">メッセージ</div>
+
+  <script>
+    /* -------------------------------------------------------------
+       1. IndexedDB Helper Functionality (Storage for Settings)
+       ------------------------------------------------------------- */
+    const DB_NAME = 'FilesHelpDB';
+    const STORE_NAME = 'settings';
+    let db = null;
+
+    function initDB() {
+      return new Promise((resolve, reject) => {
+        const request = indexedDB.open(DB_NAME, 1);
+        request.onupgradeneeded = (e) => {
+          const database = e.target.result;
+          if (!database.objectStoreNames.contains(STORE_NAME)) {
+            database.createObjectStore(STORE_NAME);
+          }
+        };
+        request.onsuccess = (e) => {
+          db = e.target.result;
+          resolve(db);
+        };
+        request.onerror = (e) => reject(e);
+      });
+    }
+
+    async function saveSetting(key, value) {
+      if (!db) await initDB();
+      return new Promise((resolve, reject) => {
+        const tx = db.transaction(STORE_NAME, 'readwrite');
+        const store = tx.objectStore(STORE_NAME);
+        store.put(value, key);
+        tx.oncomplete = () => resolve();
+        tx.onerror = (e) => reject(e);
+      });
+    }
+
+    async function getSetting(key, defaultValue) {
+      if (!db) await initDB();
+      return new Promise((resolve) => {
+        const tx = db.transaction(STORE_NAME, 'readonly');
+        const store = tx.objectStore(STORE_NAME);
+        const req = store.get(key);
+        req.onsuccess = () => resolve(req.result !== undefined ? req.result : defaultValue);
+        req.onerror = () => resolve(defaultValue);
+      });
+    }
+
+    /* -------------------------------------------------------------
+       2. Internationalization (i18n) Translations Data
+       ------------------------------------------------------------- */
+    const translations = {
+      ja: {
+        hero_tag: "全Android™標準搭載",
+        hero_title: "DocumentsUI (Files)",
+        hero_desc: "Android使ってるならコレ！システム機能だから安全で高機能。ログイン不要・不要な権限なしで使える最強のファイルマネージャー。",
+        search_label: "ヘルプや機能を検索 (e.g. Zip, Drive, data)...",
+        sec_key_features: "おすすめの最高機能",
+        feat1_title: "Android/data ディレクトリに完全アクセス",
+        feat1_desc: "外部ファイル管理アプリではアクセス規制される「Android/data」や「Android/obb」フォルダのデータも、システム標準アプリのため安全かつ確実に直接閲覧・編集が可能です。",
+        feat2_title: "ドラッグ＆ドロップで超快適書き込み",
+        feat2_desc: "「ドラッグアンドドロップがいっちゃん使いやすい！」画面分割時やマルチウィンドウ時に、ファイルを長押しして別のフォルダーやウィンドウへドラッグするだけで高速転送。",
+        feat3_title: "Zipを解凍せずにプレビュー＆選択展開",
+        feat3_desc: "圧縮ファイル（Zip）の中身全体を解凍することなく中身を閲覧可能。必要なファイルだけを個別に選んで解凍・抽出できるのでストレージ容量を節約できます。",
+        feat4_title: "クラウドストレージ統合 (Drive & Smart connect)",
+        feat4_desc: "DriveやSmart connect等の対応ドライブアプリをそのまま単一のファイルマネージャーUI内で統合して切り替え可能。追加のログイン作業なしでシームレスに同期。",
+        feat5_title: "不要な権限なし・安心のシステム保護",
+        feat5_desc: "サードパーティ製アプリのような「フルストレージ権限要求」や「トラッキング」はありません。OS標準のシステムUIだからこそ最高のセキュリティを提供。",
+        sec_help_center: "詳しいヘルプ＆使い方ガイド",
+        drawer_menu_title: "Files 機能メニュー",
+        nav_top: "トップページ",
+        nav_data: "Android/dataの表示",
+        nav_dnd: "ドラッグ＆ドロップ",
+        nav_zip: "Zip解凍＆閲覧",
+        nav_cloud: "ドライブ連携",
+        nav_view: "グリッド/リスト切り替え",
+        nav_hidden: "隠しファイル表示",
+        theme_dialog_title: "テーマとM3カラー設定",
+        theme_dark_mode: "ダークモード",
+        theme_seed_color: "キーカラー (Seed Color)",
+        btn_close: "閉じる"
+      },
+      en: {
+        hero_tag: "Pre-installed on all Android™",
+        hero_title: "DocumentsUI (Files)",
+        hero_desc: "If you use Android, this is IT! Safe, powerful system component. No logins, no unnecessary permissions required.",
+        search_label: "Search help articles (e.g. Zip, Drive, data)...",
+        sec_key_features: "Key Features & Highlights",
+        feat1_title: "Full Access to Android/data Directory",
+        feat1_desc: "Directly view and edit files in restricted folders like 'Android/data' and 'Android/obb' which third-party file apps cannot reach, thanks to system-level permissions.",
+        feat2_title: "Super Intuitive Drag & Drop Writing",
+        feat2_desc: "Drag & drop is simply the best! In split-screen mode, press and drag files to instantly copy or move them across folders.",
+        feat3_title: "Zip Preview & Selective Extraction",
+        feat3_desc: "Browse archive contents without unzipping the entire file! Selectively extract only the files you need to save device storage.",
+        feat4_title: "Cloud Storage Integration (Drive & Smart Connect)",
+        feat4_desc: "Integrated seamlessly with cloud apps like Drive or Smart Connect. Switch between internal storage and cloud drives without extra logins.",
+        feat5_title: "No Extra Permissions & High Security",
+        feat5_desc: "No full-storage permission prompts or tracking like third-party apps. Built directly into the OS for maximum privacy and safety.",
+        sec_help_center: "Detailed Help & Guides",
+        drawer_menu_title: "Files Feature Menu",
+        nav_top: "Top Page",
+        nav_data: "Android/data Access",
+        nav_dnd: "Drag & Drop Operations",
+        nav_zip: "Zip Preview & Extract",
+        nav_cloud: "Drive Integration",
+        nav_view: "Grid/List Switch",
+        nav_hidden: "Show Hidden Files",
+        theme_dialog_title: "Theme & M3 Color Options",
+        theme_dark_mode: "Dark Mode",
+        theme_seed_color: "Key Color (Seed Color)",
+        btn_close: "Close"
+      }
+    };
+
+    /* Massive Detailed Help Content Database */
+    const helpDatabase = [
+      {
+        id: "android_data",
+        title_ja: "Q. Android/data や Android/obb フォルダを表示・編集する方法",
+        title_en: "Q. How to access & edit Android/data or Android/obb folders",
+        body_ja: "Android 11以降、プライバシー保護の観点から「Android/data」フォルダへのアクセスが制限されていますが、このシステム標準ファイルマネージャー（DocumentsUI）を利用するとアクセスが可能です。<br><br><b>操作方法：</b><br>1. Filesアプリを開きます。<br>2. 左側のサイドメニューから内部ストレージ（デバイス名）を選択します。<br>3. 「Android」＞「data」フォルダーへ進みます。<br>4. アクセス許可ポップアップが表示された場合は「このフォルダーを使用」をタップします。",
+        body_en: "Since Android 11, access to 'Android/data' has been restricted for third-party apps, but the native system DocumentsUI file manager retains access permission.<br><br><b>Steps:</b><br>1. Open Files.<br>2. Select internal storage from the sidebar.<br>3. Navigate to 'Android' > 'data'.<br>4. When prompted, tap 'Use this folder' to grant system access."
+      },
+      {
+        id: "dnd",
+        title_ja: "Q. ドラッグ＆ドロップでファイルを移動・コピーする",
+        title_en: "Q. Copy/Move files easily using Drag & Drop",
+        body_ja: "マルチウィンドウ（画面分割）機能と組み合わせることで、直感的にファイルをコピーできます。<br><br><b>操作手順：</b><br>1. 画面分割で2つのFilesウィンドウを開くか、受信側アプリを半分に表示します。<br>2. 移動したいファイルを長押しして選択状態にします。<br>3. そのまま指を離さずに目的地フォルダーまでスライドしてドロップします。",
+        body_en: "You can drag and drop files effortlessly when using split-screen multitasking.<br><br><b>Steps:</b><br>1. Open two Files windows in split-screen mode.<br>2. Tap and hold the file you want to transfer.<br>3. Drag it over to the target directory and drop it."
+      },
+      {
+        id: "zip",
+        title_ja: "Q. Zipアーカイブの解凍なしプレビューと個別展開",
+        title_en: "Q. Preview & selectively extract Zip archive files",
+        body_ja: "大きなZipファイルをすべて解凍することなく、中身を直接開いて確認できます。<br><br><b>手順：</b><br>1. .zipファイルをタップすると、フォルダーのように内部が展開されます。<br>2. 必要なファイルだけを長押しし、「別の場所へコピー」を選択して必要なものだけを取り出すことができます。",
+        body_en: "Browse inside zip files directly without taking up space by unzipping everything.<br><br><b>Steps:</b><br>1. Tap any .zip file to browse it like a standard folder.<br>2. Select specific items inside and choose 'Copy to...' to extract only what you need."
+      },
+      {
+        id: "drive",
+        title_ja: "Q. Google Drive や Smart Connect などのクラウドストレージ切り替え",
+        title_en: "Q. Switch between Google Drive, Smart Connect, and local storage",
+        body_ja: "対応するクラウドドライブアプリがインストールされている場合、サイドメニューに統合アカウントが表示されます。<br><br>アプリを開いて左上の「≡」メニューをタップし、Driveまたは接続機器を選択すると、同一のインターフェースでシームレスに操作可能です。",
+        body_en: "When supported cloud apps are installed, they automatically appear in the navigation drawer.<br><br>Tap the menu icon (≡) in the top left and select your cloud drive to switch views without extra account configuration."
+      },
+      {
+        id: "view",
+        title_ja: "Q. グリッド表示とリスト表示の切り替え方法",
+        title_en: "Q. How to switch between Grid view and List view",
+        body_ja: "右上の表示切り替えアイコン（4つの四角または箇条書きアイコン）をタップすることで、画像重視の「グリッド表示」と詳細情報重視の「リスト表示」を瞬時に切り替えられます。",
+        body_en: "Tap the view toggle icon on the top right to switch between thumbnail-focused 'Grid view' and info-focused 'List view'."
+      },
+      {
+        id: "hidden",
+        title_ja: "Q. 隠しファイル（.で始まるファイル）を表示する",
+        title_en: "Q. Show hidden files (files starting with a dot)",
+        body_ja: "右上メニュー（3つの点）から「隠しファイルを表示」を有効にすると、通常は隠されている設定ファイルやドットファイル（例: .nomediaなど）を確認・編集できます。",
+        body_en: "In the top-right options menu, check 'Show hidden files' to reveal system and configuration dotfiles like '.nomedia'."
+      },
+      {
+        id: "categories",
+        title_ja: "Q. 画像・音声・動画など種類ごとの自動分類表示",
+        title_en: "Q. Automatic category filters (Images, Audio, Videos)",
+        body_ja: "トップ画面には「画像」「音声」「動画」「ドキュメント」「ダウンロード」などのカテゴリーピルが用意されており、ファイルの位置に関わらず該当ファイルのみを素早く一覧表示できます。",
+        body_en: "Category buttons like 'Images', 'Audio', 'Videos', and 'Documents' on the home view allow quick access to specific file types across all directories."
+      },
+      {
+        id: "file_details",
+        title_ja: "Q. ファイルの詳細情報（パス、サイズ、更新日時）を確認する",
+        title_en: "Q. View file details (Path, size, modified date)",
+        body_ja: "ファイルを長押し選択し、右上メニューの「詳細情報」をタップすると、完全な絶対パス、ファイルサイズ、正確な更新日時などを確認できます。",
+        body_en: "Long-press any file, then select 'Get info' or 'Details' from the menu to inspect full file paths, sizes, and timestamps."
+      }
+    ];
+
+    /* -------------------------------------------------------------
+       3. Language & UI State Management
+       ------------------------------------------------------------- */
+    let currentLang = 'ja';
+    let currentSeed = '#1F6C30';
+    let isDarkMode = false;
+
+    async function setLanguage(lang) {
+      currentLang = lang;
+      await saveSetting('language', lang);
+      document.getElementById('langBtnText').textContent = lang.toUpperCase();
+
+      // Update text using data-i18n attributes
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (translations[lang][key]) {
+          el.textContent = translations[lang][key];
+        }
+      });
+
+      // Update placeholder
+      const searchInput = document.getElementById('searchInput');
+      if (searchInput) {
+        searchInput.placeholder = " ";
+      }
+
+      renderHelpItems();
+    }
+
+    function toggleLanguage() {
+      const nextLang = currentLang === 'ja' ? 'en' : 'ja';
+      setLanguage(nextLang);
+      showToast(nextLang === 'ja' ? '日本語に切り替えました' : 'Switched to English');
+    }
+
+    /* -------------------------------------------------------------
+       4. Render Help Items with Search Filtering
+       ------------------------------------------------------------- */
+    function renderHelpItems(filterText = '') {
+      const container = document.getElementById('helpAccordionList');
+      container.innerHTML = '';
+
+      const query = filterText.toLowerCase().trim();
+
+      const filtered = helpDatabase.filter(item => {
+        const title = (currentLang === 'ja' ? item.title_ja : item.title_en).toLowerCase();
+        const body = (currentLang === 'ja' ? item.body_ja : item.body_en).toLowerCase();
+        return title.includes(query) || body.includes(query);
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = `<div style="text-align:center; padding: 20px; color: var(--myoui-sys-color-on-surface-variant); font-size:14px;">
+          ${currentLang === 'ja' ? '該当するヘルプ項目が見つかりませんでした' : 'No help articles found matching your query.'}
+        </div>`;
+        return;
+      }
+
+      filtered.forEach(item => {
+        const title = currentLang === 'ja' ? item.title_ja : item.title_en;
+        const body = currentLang === 'ja' ? item.body_ja : item.body_en;
+
+        const accordionEl = document.createElement('div');
+        accordionEl.className = 'accordion-item';
+        accordionEl.id = `help-${item.id}`;
+        accordionEl.innerHTML = `
+          <div class="accordion-header" onclick="toggleAccordion(this)">
+            <span class="accordion-title">${title}</span>
+            <svg class="accordion-chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="accordion-body">
+            <p>${body}</p>
+          </div>
+        `;
+        container.appendChild(accordionEl);
+      });
+    }
+
+    function filterHelpContent() {
+      const query = document.getElementById('searchInput').value;
+      renderHelpItems(query);
+    }
+
+    function toggleAccordion(headerEl) {
+      const parent = headerEl.parentElement;
+      const isActive = parent.classList.contains('active');
+      
+      // Close all other accordions
+      document.querySelectorAll('.accordion-item').forEach(item => {
+        item.classList.remove('active');
+      });
+
+      if (!isActive) {
+        parent.classList.add('active');
+      }
+    }
+
+    function openHelpCategory(categoryId) {
+      document.getElementById('searchInput').value = '';
+      renderHelpItems();
+      const target = document.getElementById(`help-${categoryId}`);
+      if (target) {
+        target.classList.add('active');
+        target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }
+
+    /* -------------------------------------------------------------
+       5. Right Side Drawer & Swipe Management
+       ------------------------------------------------------------- */
+    function toggleDrawer(open) {
+      const backdrop = document.getElementById('drawerBackdrop');
+      if (open) {
+        backdrop.classList.add('is-open');
+      } else {
+        backdrop.classList.remove('is-open');
+      }
+    }
+
+    /* Touch Swipe from Right Edge Logic */
+    let touchStartX = 0;
+    let touchStartY = 0;
+
+    window.addEventListener('touchstart', (e) => {
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+    }, { passive: true });
+
+    window.addEventListener('touchend', (e) => {
+      const touchEndX = e.changedTouches[0].clientX;
+      const touchEndY = e.changedTouches[0].clientY;
+      const diffX = touchStartX - touchEndX;
+      const diffY = Math.abs(touchStartY - touchEndY);
+
+      // Detect swipe left from right screen area
+      if (diffX > 70 && diffY < 100 && touchStartX > (window.innerWidth - 80)) {
+        toggleDrawer(true);
+      }
+      // Detect swipe right to close drawer
+      else if (diffX < -70 && diffY < 100) {
+        toggleDrawer(false);
+      }
+    }, { passive: true });
+
+    /* -------------------------------------------------------------
+       6. Dialog & M3 Theme Management
+       ------------------------------------------------------------- */
+    function openDialog(id) {
+      document.getElementById(id).classList.add('is-open');
+    }
+
+    function closeDialog(id) {
+      document.getElementById(id).classList.remove('is-open');
+    }
+
+    async function updateThemeSettings() {
+      const darkModeCheckbox = document.getElementById('darkModeToggle');
+      const seedPicker = document.getElementById('seedColorPicker');
+
+      isDarkMode = darkModeCheckbox.checked;
+      currentSeed = seedPicker.value;
+
+      if (window.M3Theme) {
+        window.M3Theme.applyTheme(currentSeed, isDarkMode);
+      }
+
+      await saveSetting('darkMode', isDarkMode);
+      await saveSetting('seedColor', currentSeed);
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 2500);
+    }
+
+    function scrollToTop() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    /* -------------------------------------------------------------
+       7. Initial Application Setup & Load
+       ------------------------------------------------------------- */
+    window.addEventListener('DOMContentLoaded', async () => {
+      await initDB();
+
+      // Restore saved settings or defaults
+      currentLang = await getSetting('language', 'ja');
+      isDarkMode = await getSetting('darkMode', false);
+      currentSeed = await getSetting('seedColor', '#1F6C30');
+
+      document.getElementById('darkModeToggle').checked = isDarkMode;
+      document.getElementById('seedColorPicker').value = currentSeed;
+
+      // Apply initial theme
+      if (window.M3Theme) {
+        window.M3Theme.applyTheme(currentSeed, isDarkMode);
+      }
+
+      await setLanguage(currentLang);
+    });
+  </script>
+</body>
+</html>
